@@ -1,0 +1,85 @@
+:root{
+  --imgPxSize:  40px;
+}
+
+#bodyEncap{
+  display: grid;
+  grid-template-columns: 5% auto;
+}
+
+#buttonBarsCont{
+  position: fixed;
+  bottom: 2%;
+  right: 3%;
+  z-index: 1000;
+}
+#buttonBarsCont3{
+  position: fixed;
+  bottom: 7%;
+  right: 3%;
+  z-index: 1000;
+}
+#buttonBars2{
+  position: fixed;
+  bottom: 5%;
+  right: 4%;
+  z-index: 1000;
+}
+#mapEncap{
+  height: 100vh;
+}
+
+canvas{
+  height: 100vh;
+}
+
+/*side bar*/
+#sideBarEncap{
+  height: 100vh;
+  background-color: aqua;
+  text-align: center;
+  padding: 0px 3px;
+  display: grid;
+}
+#user_profile_pic{
+  width:var(--imgPxSize);
+  height:var(--imgPxSize);
+  object-fit:cover;
+  border-radius: 50%;
+}
+#sideBarBot{
+  display: flex;
+  flex-direction: column;
+
+  justify-content: flex-end;
+  padding-bottom: 50%;
+}
+.img_icon{
+  width: var(--imgPxSize);
+  height: var(--imgPxSize);
+  padding: 3px 4px;
+  margin: 10px 0px;
+  border-radius: 3px;
+}
+.img_icon:hover{
+  background-color: #0000003d;
+}
+.horizontalSideReturn{
+
+}
+
+@media only screen and (max-width: 600px) {
+  /*
+  #bodyEncap{
+    grid-template-columns: auto;
+  }
+  #sideBarEncap{
+    height: 10vh;
+  }
+  canvas{
+    height: 90vh;
+    width: auto;
+  }
+  */
+}
+
