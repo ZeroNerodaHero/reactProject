@@ -1,77 +1,45 @@
-import React, { useState } from "react";
-import Map from "./Map";
-import { Layers, TileLayer, VectorLayer } from "./Layers";
-import { Style, Icon } from "ol/style";
-import Feature from "ol/Feature";
-import Point from "ol/geom/Point";
-import { osm, vector } from "./Source";
-import { fromLonLat, get } from "ol/proj";
-import GeoJSON from "ol/format/GeoJSON";
-import FeatureStyles from "./Features/Styles";
+import './App.css';
 
-import mapConfig from "./config.json";
-import "./App.css";
+// react
+import React, { useState, useEffect } from 'react';
 
-import addIcon from "./debugFiles/add.svg"
-import mailIcon from "./debugFiles/mail.svg"
+// openlayers
+import GeoJSON from 'ol/format/GeoJSON'
+import Feature from 'ol/Feature';
 
-const geojsonObject = mapConfig.geojsonObject;
-const geojsonObject2 = mapConfig.geojsonObject2;
-const markersLonLat = [mapConfig.kansasCityLonLat, mapConfig.blueSpringsLonLat];
+// components
+import MapWrapper from './components/MapWrapper'
 
-const App = () => {
-  const [center, setCenter] = useState(fromLonLat(mapConfig.center));
-  const [zoom, setZoom] = useState(16);
+function App() {
+  
+  // set intial state
+  const [ features, setFeatures ] = useState([])
+  const [ center, setCenter] = useState([-121.955238,37.354107])
 
-  return (
-    <div id="bodyEncap">
-      <div id="sideBarEncap">
-        <div id="sideBarTop">
-          <img src="https://media.discordapp.net/attachments/700130094844477561/961128316306350120/1610023331992.png" id="user_profile_pic">
-          </img>
-          User Account
-          <hr className="horizontalSideReturn"></hr>
-        </div>
-        <div id="sideBarBot">
-          <div>
-            <hr className="horizontalSideReturn"></hr>
-            <img src={mailIcon} className="img_icon"></img>
-            <br></br>
-            <img src={addIcon} className="img_icon"></img>
-          </div>
-        </div>
-      </div>
-      <div id="mapEncap">
-        <Map center={center} zoom={zoom}>
-          <Layers>
-            <TileLayer source={osm()} zIndex={0} />
-          </Layers>
-        </Map>
-        <div id="buttonBarsCont" onClick={()=>setCenter(fromLonLat([2.3522219,48.856614]))}>
-          paris
-        </div>
-        <div id="buttonBarsCont3" onClick={()=>{
-            if (navigator.geolocation) {
-              navigator.geolocation.getCurrentPosition((position)=>{
-                setCenter(fromLonLat([position.coords.longitude,position.coords.latitude]))
-              });
-            } else{
-              setCenter(fromLonLat(mapConfig.center))
-            }
-            setZoom(18);
+  useEffect( () => {
+
+    fetch('/mock-geojson-api.json')
+      .then(response => response.json())
+      .then( (fetchedFeatures) => {
+
+        // parse fetched geojson into OpenLayers features
+        //  use options to convert feature from EPSG:4326 to EPSG:3857
+        const wktOptions = {
+          dataProjection: 'EPSG:4326',
+          featureProjection: 'EPSG:3857'
         }
-        }>
-          center
-        </div>
-      </div>
-    </div>
-  );
-};
+        const parsedFeatures = new GeoJSON().readFeatures(fetchedFeatures, wktOptions)
+        setFeatures(parsedFeatures)
 
-function createOverLayBox(internalText,eleClass,eleId){
-  return 
-    <div className="inputOverlay">
-    </div>;
+      })
+
+  },[])
+  
+  return (
+    <div className="App">
+      <MapWrapper features={features} center={center} />
+    </div>
+  )
 }
 
-export default App;
+export default App
