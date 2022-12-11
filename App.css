@@ -1,4 +1,12 @@
+:root{
+  --buttonMarginLeft: 7px;
+  --buttonMarginBot: 7px;
 
+  --guiButtonZI: 1000;
+
+  --centerButtonColor: rgb(0, 255, 204);
+  --centerButtonColorBoxShadow: rgb(0, 255, 204,0.55);
+}
 
 .App {
   text-align: center;
@@ -34,4 +42,50 @@
 
 .clicked-coord-label p {
   margin: 10px;
+}
+#centerButton{
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  margin: 10px 10px;
+  padding: 20px;
+  height: 40px;
+  width: 40px;
+
+  border-radius: 50%;
+  z-index: var(--guiButtonZI);
+
+  user-select: none;
+  -webkit-user-select: none; /*Safari*/
+  -moz-user-select: none;
+
+  background-color: var(--centerButtonColor);
+}
+#centerButton:hover{
+  --hoverEffectCenter: 0px 0px 0px 15px rgba(0,0,0,1);
+  box-shadow: var(--hoverEffectCenter);
+  -webkit-box-shadow: var(--hoverEffectCenter);
+  -moz-box-shadow: var(--hoverEffectCenter);
+}
+
+#newRequestButton{
+  --pxSize: min(40vw,120px);
+  position: fixed;
+  bottom: calc(-1*var(--pxSize));
+  left: calc(-1*var(--pxSize));
+
+  padding: var(--pxSize);
+
+  border-radius: 50%;
+  background-color: green;
+}
+#newRequestButton:hover{
+  --hoverNewRequest: 0px 0px 0px 30px rgba(0,0,0,1);
+  box-shadow: var(--hoverNewRequest);
+  -webkit-box-shadow: var(--hoverNewRequest);
+  -moz-box-shadow: var(--hoverNewRequest);
+}
+
+#newRequestButtonText{
+
 }

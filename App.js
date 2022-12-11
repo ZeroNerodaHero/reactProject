@@ -9,35 +9,35 @@ import Feature from 'ol/Feature';
 
 // components
 import MapWrapper from './components/MapWrapper'
+import { set } from 'ol/transform';
 
 function App() {
   
   // set intial state
   const [ features, setFeatures ] = useState([])
   const [ center, setCenter] = useState([-121.955238,37.354107])
-
-  useEffect( () => {
-
-    fetch('/mock-geojson-api.json')
-      .then(response => response.json())
-      .then( (fetchedFeatures) => {
-
-        // parse fetched geojson into OpenLayers features
-        //  use options to convert feature from EPSG:4326 to EPSG:3857
-        const wktOptions = {
-          dataProjection: 'EPSG:4326',
-          featureProjection: 'EPSG:3857'
-        }
-        const parsedFeatures = new GeoJSON().readFeatures(fetchedFeatures, wktOptions)
-        setFeatures(parsedFeatures)
-
-      })
-
-  },[])
   
   return (
     <div className="App">
       <MapWrapper features={features} center={center} />
+      <div id="guiCont">
+        <div id="centerButton" onClick={()=>{
+          if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition((position)=>{
+              setCenter([position.coords.longitude,position.coords.latitude])
+            })
+          } else{
+            setCenter([0,0])
+          }
+        }}>
+          Center
+        </div>
+        <div id="newRequestButton">
+          <div id="newRequestButtonText">
+            +
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
